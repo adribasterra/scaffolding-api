@@ -1,0 +1,32 @@
+version: '3.2'
+services:
+  sqlserver:
+    restart: always
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: yourStrong(!)Password
+    volumes:
+      - "ubgroup-qms-db:/var/opt/mssql"
+    ports:
+      - "127.0.0.1:1433:1433"
+  server:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: ["./wait-for-it.sh", "sqlserver:1433", "--", "pm2-runtime", "start", "ecosystem.config.js"]
+    volumes:
+      - ./pm2-logs:/scaffolding/pm2-logs
+      - ./file-storage:/scaffolding/file-storage
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      - sqlserver
+    links:
+      - sqlserver
+    container_name: scaffolding-api
+volumes:
+  ubgroup-qms-db:
+    external: true

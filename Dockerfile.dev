@@ -1,0 +1,17 @@
+FROM node:14.16.0
+
+WORKDIR /scaffolding
+
+RUN npm install -g npm@latest pm2
+
+COPY package.json ./
+
+RUN npm install --production
+
+COPY dist/ /scaffolding
+
+COPY ecosystem.config.js ecosystem.config.js
+COPY wait-for-it.sh wait-for-it.sh
+RUN chmod 777 wait-for-it.sh
+
+EXPOSE 8080 8081

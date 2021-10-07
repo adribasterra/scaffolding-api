@@ -1,1 +1,1 @@
-# scaffolding-init
+# scaffolding-api

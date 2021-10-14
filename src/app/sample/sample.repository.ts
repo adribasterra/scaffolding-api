@@ -1,8 +1,8 @@
 import { number } from "joi";
 import { sample } from "lodash";
-import { DatabaseService } from "../../../database/src";
+import { DatabaseService } from "../../database/src";
 import { Service } from 'typedi';   // Este es el @Service
-import { Sample } from '../sample.model';
+import { Sample } from './sample.model';
 
 /* Todas las clases se declaran con @Service por inyección de dependencias.
  * Esto permite que no se tenga que instanciar con new SampleRepository, el sistema
@@ -35,5 +35,35 @@ export class SampleRepository {
 
     const samples = await this.dbService.execQuery(queryDoc);
     return samples.rows;
+  }
+  
+  async post(sampleType:string) : Promise<boolean>{
+    const queryDoc: any = {
+      sql: 'INSERT INTO samples (type) VALUES($1)',
+      params: [sampleType]
+    };
+
+    const samples = await this.dbService.execQuery(queryDoc);
+    return samples.rows[0];
+  }
+
+  async update(sampleId:number, newType:string):Promise<Sample>{
+    const queryDoc:any = {
+      sql: 'UPDATE samples SET id=$1, type=$2 WHERE id=$1',
+      params: [sampleId, newType]
+    };
+
+    const samples = await this.dbService.execQuery(queryDoc);
+    return samples.rows[0];
+  }
+
+  async delete(sampleId:number):Promise<Sample>{
+    const queryDoc:any = {
+      sql: 'DELETE FROM samples WHERE id=$1 RETURNING *',
+      params: [sampleId]
+    };
+
+    const samples = await this.dbService.execQuery(queryDoc);
+    return samples.rows[0];
   }
 }

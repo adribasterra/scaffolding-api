@@ -26,6 +26,15 @@ export class Api {
     this.apiRouter.get('/samples', (req, res, next) =>
       this.sampleController.getAll(req, res, next)
     );
+    this.apiRouter.post('/samples', (req, res, next) =>
+      this.sampleController.create(req, res, next)
+    );
+    this.apiRouter.patch('/samples/:sampleId', (req, res, next) =>
+      this.sampleController.update(req, res, next)
+    );
+    this.apiRouter.delete('/samples/:sampleId', (req, res, next) =>
+      this.sampleController.delete(req, res, next)
+    );
   }
 }
 

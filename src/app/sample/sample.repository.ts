@@ -37,7 +37,7 @@ export class SampleRepository {
     return samples.rows;
   }
   
-  async post(sampleType:string) : Promise<boolean>{
+  async post(sampleType:string) : Promise<Sample>{
     const queryDoc: any = {
       sql: 'INSERT INTO samples (type) VALUES($1)',
       params: [sampleType]

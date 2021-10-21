@@ -20,19 +20,19 @@ export class SampleService {
     return await this.sampleRepository.getAll();
   }
   
-  async create(type: string) : Promise<boolean>{
-    if(!this.isValidType(type)){
+  async create(sample: Sample) : Promise<Sample>{
+    if(!this.isValidType(sample.type)){
       return Promise.reject(new Error('Invalid Sample Type'));
     }
-    return await this.sampleRepository.post(type);
+    return await this.sampleRepository.post(sample.type);
   }
 
-  async update(sampleId: number, type:string) : Promise<Sample> {
+  async update(sampleId: number, sample: Sample) : Promise<Sample> {
     // Comprobar si la request es correcta
-    if (!this.isValidId(sampleId) && !this.isValidType(type)) {
+    if (!this.isValidId(sampleId) && !this.isValidType(sample.type)) {
       return Promise.reject(new Error('Invalid Sample ID'));
     }
-    return await this.sampleRepository.update(sampleId, type);
+    return await this.sampleRepository.update(sampleId, sample.type);
   }
 
   async delete(sampleId: number): Promise<Sample> {

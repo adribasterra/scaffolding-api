@@ -42,7 +42,7 @@ export class SampleController {
       this.errorService.sendError(res, StatusCodes.BAD_REQUEST)
     }
     try {
-      const sample = await this.sampleService.create(req.body.type);
+      const sample = await this.sampleService.create(req.body);
       res.send(sample);
     } catch (err) {
       res.sendStatus(StatusCodes.NOT_FOUND);
@@ -58,7 +58,7 @@ export class SampleController {
 
     try {
       const sampleCode = parseInt(req.params.sampleId);
-      const sample = await this.sampleService.update(sampleCode, req.body.type);
+      const sample = await this.sampleService.update(sampleCode, req.body);
       res.send(sample);
     } catch (err) {
       res.sendStatus(StatusCodes.NOT_FOUND);
